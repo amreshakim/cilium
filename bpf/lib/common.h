@@ -115,15 +115,51 @@ struct portmap {
 	__u16 to;
 };
 
-struct lxc_info {
+#define ENDPOINT_KEY_IPV4 1
+#define ENDPOINT_KEY_IPV6 2
+
+/* Key to endpoint map */
+struct endpoint_key {
+	union {
+		struct {
+			__u32		ip4;
+			__u32		pad1;
+			__u32		pad2;
+			__u32		pad3;
+		};
+		union v6addr	ip6;
+	};
+	__u8 family;
+	__u8 pad4;
+	__u16 pad5;
+} __attribute__((packed));
+
+#define ENDPOINT_F_HOST		1 /* Special endpoint representing local host */
+
+/* Value of endpoint map */
+struct endpoint_info {
 	__u32		ifindex;
 	__u16		sec_label;
 	__u16           lxc_id;
+	__u32		flags;
 	mac_t		mac;
 	mac_t		node_mac;
 	union v6addr	ip;
 	struct portmap  portmap[PORTMAP_MAX];
 };
+
+/* Value of tunnel endpoint map */
+struct tunnel_endpoint {
+	union {
+		struct {
+			__u32		ip4;
+			__u32		pad1;
+			__u32		pad2;
+			__u32		pad3;
+		};
+		union v6addr	ip6;
+	};
+} __attribute__((packed));
 
 struct policy_entry {
 	__u32		action;
@@ -192,6 +228,7 @@ struct drop_notify {
 #define DROP_FRAG_NOSUPPORT	-157
 #define DROP_NO_SERVICE		-158
 #define DROP_POLICY_L4		-159
+#define DROP_NO_TUNNEL_ENDPOINT -160
 
 /* skb->cb[] usage: */
 enum {
