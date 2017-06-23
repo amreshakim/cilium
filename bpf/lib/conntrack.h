@@ -231,7 +231,11 @@ static inline int __inline__ ct_lookup6(void *map, struct ipv6_ct_tuple *tuple,
 				/* FIXME: Drop packets here with missing ACK flag? */
 			}
 		}
-		/* fall through */
+
+		/* load sport + dport into tuple */
+		if (skb_load_bytes(skb, l4_off, &tuple->dport, 4) < 0)
+			return DROP_CT_INVALID_HDR;
+		break;
 
 	case IPPROTO_UDP:
 		/* load sport + dport into tuple */
