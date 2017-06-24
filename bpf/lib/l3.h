@@ -104,10 +104,9 @@ static inline int __inline__ map_lxc_in(struct __sk_buff *skb, int l4_off,
 
 static inline struct endpoint_info *__inline__ lookup_ip6_endpoint(struct ipv6hdr *ip6)
 {
-	struct endpoint_key key = {
-		.ip6 = *((union v6addr *) &ip6->daddr),
-		.family = ENDPOINT_KEY_IPV6,
-	};
+	struct endpoint_key key = {};
+	key.ip6 = *((union v6addr *) &ip6->daddr);
+	key.family = ENDPOINT_KEY_IPV6;
 
 	return map_lookup_elem(&cilium_lxc, &key);
 }
@@ -144,10 +143,9 @@ static inline int ipv6_local_delivery(struct __sk_buff *skb, int l3_off, int l4_
 
 static inline struct endpoint_info *__inline__ lookup_ip4_endpoint(struct iphdr *ip4)
 {
-	struct endpoint_key key = {
-		.ip4 = ip4->daddr,
-		.family = ENDPOINT_KEY_IPV4,
-	};
+	struct endpoint_key key = {};
+	key.ip4 = ip4->daddr;
+	key.family = ENDPOINT_KEY_IPV4;
 
 	return map_lookup_elem(&cilium_lxc, &key);
 }

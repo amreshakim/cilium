@@ -39,10 +39,7 @@ static inline int __encap_and_redirect(struct __sk_buff *skb, struct endpoint_ke
 		return DROP_NO_TUNNEL_ENDPOINT;
 	}
 
-	cilium_trace(skb, DBG_GENERIC, tunnel->ip4, tunnel->pad1);
-	cilium_trace(skb, DBG_GENERIC, tunnel->pad2, tunnel->pad3);
-
-	node_id = tunnel->ip4;
+	node_id = bpf_htonl(tunnel->ip4);
 	key.tunnel_id = seclabel;
 	key.remote_ipv4 = node_id;
 

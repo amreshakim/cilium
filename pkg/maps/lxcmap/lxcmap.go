@@ -155,8 +155,7 @@ func (m *LXCMap) WriteEndpoint(ep *endpoint.Endpoint) error {
 		return nil
 	}
 
-	key := endpointKey{}
-	copy(key.ip[:], ep.IPv6)
+	key := newEndpointKey(ep.IPv6.IP())
 
 	mac, err := ep.LXCMAC.Uint64()
 	if err != nil {
@@ -197,8 +196,7 @@ func (m *LXCMap) WriteEndpoint(ep *endpoint.Endpoint) error {
 	}
 
 	if ep.IPv4 != nil {
-		key = endpointKey{}
-		copy(key.ip[:], ep.IPv4)
+		key = newEndpointKey(ep.IPv4.IP())
 
 		// FIXME: Remove key again? Needs to be solved by caller
 		return bpf.UpdateElement(m.fd, unsafe.Pointer(&key), unsafe.Pointer(&lxc), 0)
@@ -213,9 +211,7 @@ func (m *LXCMap) AddHostEntry(ip net.IP) error {
 		return nil
 	}
 
-	key := endpointKey{}
-	copy(key.ip[:], ip)
-
+	key := newEndpointKey(ip)
 	ep := LXCInfo{Flags: EndpointFlagHost}
 
 	m.Mutex.Lock()

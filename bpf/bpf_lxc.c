@@ -295,7 +295,7 @@ skip_service_lookup:
 			return ipv6_local_delivery(skb, l3_off, l4_off, SECLABEL, ip6, tuple->nexthdr, ep);
 		} else {
 #ifdef ENCAP_IFINDEX
-			struct endpoint_key key;
+			struct endpoint_key key = {};
 
 			/* IPv6 lookup key: daddr/96 */
 			key.ip6.p1 = daddr->p1;
@@ -593,10 +593,9 @@ skip_service_lookup:
 		} else {
 #ifdef ENCAP_IFINDEX
 			/* IPv4 lookup key: daddr & IPV4_MASK */
-			struct endpoint_key key = {
-				.ip4 = orig_dip & IPV4_MASK,
-				.family = ENDPOINT_KEY_IPV4,
-			};
+			struct endpoint_key key = {};
+			key.ip4 = orig_dip & IPV4_MASK;
+			key.family = ENDPOINT_KEY_IPV4;
 
 			return encap_and_redirect(skb, &key, SECLABEL);
 #else

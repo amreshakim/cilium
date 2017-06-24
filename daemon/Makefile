@@ -8,7 +8,7 @@ GO_BINDATA := go-bindata -prefix ../ -mode 0640 -modtime 1450269211 \
 	-ignore Makefile -ignore bpf_features.h -ignore lxc_config.h \
 	-ignore netdev_config.h -ignore node_config.h -ignore '.+\.o$$' \
 	-ignore '.+\.orig$$' -ignore '.+~$$' -ignore '\.DS_Store'
-GO_BINDATA_SHA1SUM=939450ae61b5ae9f8767d82a3424a4fe653f7aa8
+GO_BINDATA_SHA1SUM=c599919777b9369bbed79adb27bcf6a3aceafc5f
 # We keep track of the go version used to update bindata in case of failures.
 # Having the version will likely be useful in the cases where someone is using
 # a older or newer version than the CI.
